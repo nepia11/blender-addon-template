@@ -2,32 +2,6 @@ import random
 import string
 import bpy
 import mathutils
-from logging import getLogger, StreamHandler, Formatter, handlers, DEBUG
-
-
-def setup_logger(log_folder: str, modname=__name__):
-    """ loggerの設定をする """
-    logger = getLogger(modname)
-    logger.setLevel(DEBUG)
-    # log重複回避　https://nigimitama.hatenablog.jp/entry/2021/01/27/084458
-    if not logger.hasHandlers():
-        sh = StreamHandler()
-        sh.setLevel(DEBUG)
-        formatter = Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        sh.setFormatter(formatter)
-        logger.addHandler(sh)
-
-        # fh = FileHandler(log_folder)  # fh = file handler
-        fh = handlers.RotatingFileHandler(
-            log_folder, maxBytes=500000, backupCount=2)
-        fh.setLevel(DEBUG)
-        fh_formatter = Formatter(
-            "%(asctime)s - %(filename)s - %(name)s"
-            " - %(lineno)d - %(levelname)s - %(message)s")
-        fh.setFormatter(fh_formatter)
-        logger.addHandler(fh)
-    return logger
 
 
 logger = getLogger(__name__)

@@ -1,12 +1,15 @@
 便利なマルチファイルアドオン用のテンプレートです
 
 ## 概要
-vscodeでの仕様を前提としていますが、適当にいじれば他の環境でも大丈夫かも
 
+vscode での仕様を前提としていますが、適当にいじれば他の環境でも大丈夫かも
 
+トップレベルの`__init__.py`はできるだけ小さく、変更が少ないようにしたい
 
 ## setup
-pipenvで必要なパッケージを管理したい場合はこんな感じで
+
+pipenv で必要なパッケージを管理したい場合はこんな感じで
+
 ```
 pip install --user pipenv
 echo export PIPENV_VENV_IN_PROJECT=true >> ~/.bashrc
@@ -14,9 +17,9 @@ source ~/.bashrc
 cd "addon dev dir"
 pipenv install
 ```
-requirements.txtから環境のpipに直接インストールするなら
+
+requirements.txt から環境の pip に直接インストールするなら
+
 ```
 pip install --user -r requirements.txt
 ```
-
-

@@ -1,7 +1,6 @@
 import bpy
-from util import setup_logger
-
-logger = setup_logger(modname=__name__)
+from logging import getLogger
+logger = getLogger(__name__)
 
 
 class Template_PT_MyPanel(bpy.types.Panel):

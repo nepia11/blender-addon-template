@@ -1,22 +1,10 @@
-# blenderのreload scripts対応
-if not("bpy" in locals()):
-    import src
-else:
-    import imp
-    imp.reload(src)
-
+import importlib
+from logging import getLogger, StreamHandler, Formatter, handlers, DEBUG
+import inspect
+import sys
 import bpy
+import os
 import datetime
-
-# log周りの設定
-
-log_folder = '{0}.log'.format(datetime.date.today())
-logger = src.util.setup_logger(log_folder, modname=__name__)
-logger.debug('hello')
-
-# 翻訳用の辞書
-translation_dict = src.translations.translation_dict
-translation = bpy.app.translations.pgettext
 
 
 # アドオン情報
@@ -34,7 +22,64 @@ bl_info = {
 }
 
 
+def setup_logger(log_folder: str, modname=__name__):
+    """ loggerの設定をする """
+    logger = getLogger(modname)
+    logger.setLevel(DEBUG)
+    # log重複回避　https://nigimitama.hatenablog.jp/entry/2021/01/27/084458
+    if not logger.hasHandlers():
+        sh = StreamHandler()
+        sh.setLevel(DEBUG)
+        formatter = Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        sh.setFormatter(formatter)
+        logger.addHandler(sh)
+
+        # fh = FileHandler(log_folder)  # fh = file handler
+        fh = handlers.RotatingFileHandler(
+            log_folder, maxBytes=500000, backupCount=2)
+        fh.setLevel(DEBUG)
+        fh_formatter = Formatter(
+            "%(asctime)s - %(filename)s - %(name)s"
+            " - %(lineno)d - %(levelname)s - %(message)s")
+        fh.setFormatter(fh_formatter)
+        logger.addHandler(fh)
+    return logger
+
+
+# log周りの設定
+scripts_dir = os.path.dirname(os.path.abspath(__file__))
+log_folder = os.path.join(scripts_dir, f"{datetime.date.today()}.log")
+logger = setup_logger(log_folder, modname=__name__)
+logger.debug('hello')
+
+
+# サブモジュールのインポート
+module_names = [
+    "translations",
+    "ops_template",
+    "ui_template",
+]
+namespace = {}
+for name in module_names:
+    fullname = '{}.{}.{}'.format(__package__, "lib", name)
+    if fullname in sys.modules:
+        # if "bpy" in locals():
+        namespace[name] = importlib.reload(sys.modules[fullname])
+    else:
+        namespace[name] = importlib.import_module(fullname)
+
+# モジュールからクラスの取得
 classes = []
+for module in module_names:
+    for module_class in [obj for name, obj in inspect.getmembers(
+            namespace[module]) if inspect.isclass(obj)]:
+        classes.append(module_class)
+
+
+# 翻訳用の辞書
+translation_dict = namespace["translations"].translation_dict
+translation = bpy.app.translations.pgettext
 
 
 def register():

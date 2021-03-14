@@ -1,8 +1,8 @@
 import bpy
-from util import setup_logger
+from logging import getLogger
+logger = getLogger(__name__)
 
 translation = bpy.app.translations.pgettext
-logger = setup_logger(modname=__name__)
 
 
 class Template_OT_MyOperator(bpy.types.Operator):
