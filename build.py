@@ -11,7 +11,7 @@ file_list = (
     "LICENSE",
     "README.md",
     "__init__.py",
-    "src",
+    "lib",
 )
 
 ignores = shutil.ignore_patterns(
@@ -53,7 +53,7 @@ def make_zip(org_name: str, file_list: tuple, prefix: str):
 
 def main(args):
     arg_len = len(args)
-    org_name: str = "blender_gpencil_stroke_normalizer"
+    org_name: str = "dst"
     prefix: str = ""
     if arg_len == 1:
         prefix = random_name(4)
