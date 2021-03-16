@@ -27,8 +27,8 @@ def random_name(n: int) -> str:
     return "".join(random.choices(string.ascii_letters + string.digits, k=n))
 
 
-def make_zip(org_name: str, file_list: tuple, prefix: str):
-    zip_name: str = org_name+"_"+prefix
+def make_zip(org_name: str, file_list: tuple, suffix: str):
+    zip_name: str = org_name+"_"+suffix
     zip_dir = "./"+zip_name
     zip_path = "./" + zip_name + ".zip"
     print(zip_path)
@@ -54,16 +54,16 @@ def make_zip(org_name: str, file_list: tuple, prefix: str):
 def main(args):
     arg_len = len(args)
     org_name: str = "dst"
-    prefix: str = ""
+    suffix: str = ""
     if arg_len == 1:
-        prefix = random_name(4)
+        suffix = random_name(4)
     elif arg_len == 2:
-        prefix = args[1]
+        suffix = args[1]
     else:
         org_name = args[1]
-        prefix = args[2]
+        suffix = args[2]
 
-    make_zip(org_name, file_list, prefix)
+    make_zip(org_name, file_list, suffix)
 
 
 main(args)
