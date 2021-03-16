@@ -3,7 +3,7 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 
-class Template_PT_MyPanel(bpy.types.Panel):
+class TEMPLATE_PT_MyPanel(bpy.types.Panel):
 
     bl_label = "My panel"
     bl_space_type = 'VIEW_3D'
@@ -22,7 +22,6 @@ class Template_PT_MyPanel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         layout.label(text="hoge")
-        # [開始] / [終了] ボタンを追加
         layout.operator("template.my_operator")
         layout.separator()
         # ストローク並べ替え

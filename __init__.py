@@ -34,8 +34,6 @@ def setup_logger(log_folder: str, modname=__name__):
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         sh.setFormatter(formatter)
         logger.addHandler(sh)
-
-        # fh = FileHandler(log_folder)  # fh = file handler
         fh = handlers.RotatingFileHandler(
             log_folder, maxBytes=500000, backupCount=2)
         fh.setLevel(DEBUG)
@@ -56,18 +54,19 @@ logger.debug('hello')
 
 # サブモジュールのインポート
 module_names = [
-    "translations",
     "ops_template",
     "ui_template",
+    "translations",
 ]
 namespace = {}
 for name in module_names:
     fullname = '{}.{}.{}'.format(__package__, "lib", name)
+    # if "bpy" in locals():
     if fullname in sys.modules:
-        # if "bpy" in locals():
         namespace[name] = importlib.reload(sys.modules[fullname])
     else:
         namespace[name] = importlib.import_module(fullname)
+logger.debug(namespace)
 
 # モジュールからクラスの取得
 classes = []
@@ -78,7 +77,7 @@ for module in module_names:
 
 
 # 翻訳用の辞書
-translation_dict = namespace["translations"].translation_dict
+translation_dict = namespace["translations"].get_dict()
 translation = bpy.app.translations.pgettext
 
 
@@ -88,6 +87,7 @@ def register():
 
     # 翻訳辞書の登録
     bpy.app.translations.register(__name__, translation_dict)
+    logger.debug("succeeded register template addon")
 
 
 def unregister():

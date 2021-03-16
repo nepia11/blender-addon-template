@@ -2,6 +2,7 @@ import random
 import string
 import bpy
 import mathutils
+from logging import getLogger
 
 
 logger = getLogger(__name__)

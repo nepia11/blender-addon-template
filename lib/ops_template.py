@@ -1,3 +1,4 @@
+# コピペする用　__init__への登録は解除しといたほうが良い
 import bpy
 from logging import getLogger
 logger = getLogger(__name__)
@@ -5,10 +6,10 @@ logger = getLogger(__name__)
 translation = bpy.app.translations.pgettext
 
 
-class Template_OT_MyOperator(bpy.types.Operator):
+class TEMPLATE_OT_MyOperator(bpy.types.Operator):
     """ my operator description """
     bl_idname = "template.my_operator"
-    bl_label = "my operator"
+    bl_label = translation("my operator")
     bl_description = "operator description"
     bl_options = {"REGISTER", "UNDO"}
 
@@ -22,7 +23,7 @@ class Template_OT_MyOperator(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class Template_OT_MyTimerEventOperator(bpy.types.Operator):
+class TEMPLATE_OT_MyTimerEventOperator(bpy.types.Operator):
     """
     タイマーイベントを使ってアレコレするオペレータ
     timer eventについて参照
@@ -43,7 +44,7 @@ class Template_OT_MyTimerEventOperator(bpy.types.Operator):
         return True if cls.__timer else False
 
     def __handle_add(self, context):
-        op_cls = Template_OT_MyTimerEventOperator
+        op_cls = TEMPLATE_OT_MyTimerEventOperator
         if not self.is_running():
             # タイマを登録
             interval = self.interval
@@ -55,7 +56,7 @@ class Template_OT_MyTimerEventOperator(bpy.types.Operator):
             context.window_manager.modal_handler_add(self)
 
     def __handle_remove(self, context):
-        op_cls = Template_OT_MyTimerEventOperator
+        op_cls = TEMPLATE_OT_MyTimerEventOperator
         if self.is_running():
             # タイマの登録を解除
             context.window_manager.event_timer_remove(
@@ -80,7 +81,7 @@ class Template_OT_MyTimerEventOperator(bpy.types.Operator):
         return {'PASS_THROUGH'}
 
     def invoke(self, context, event):
-        op_cls = Template_OT_MyTimerEventOperator
+        op_cls = TEMPLATE_OT_MyTimerEventOperator
 
         if context.area.type == 'VIEW_3D':
             if not op_cls.is_running():
