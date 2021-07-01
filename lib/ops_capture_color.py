@@ -1,6 +1,7 @@
 import bpy
 import bgl
 from logging import getLogger
+
 logger = getLogger(__name__)
 
 translation = bpy.app.translations.pgettext
@@ -28,7 +29,7 @@ def capture_under_cursor(buffer, mouse_x=0, mouse_y=0, type_flg="i") -> list:
 
 
 def bytes_to_color_code(color: list) -> str:
-    """ RGBAのイテラブルを投げるとカラーコードを返してくれる"""
+    """RGBAのイテラブルを投げるとカラーコードを返してくれる"""
     c = color
     return f"#{c[0]:x}{c[1]:x}{c[2]:x}{c[3]:x}"
 
@@ -39,7 +40,8 @@ def create_buffer(src_width: int = 1, src_height: int = 1):
 
 
 class TEMPLATE_OT_CaptureColor(bpy.types.Operator):
-    """ カーソル下の色を取得するやつ """
+    """カーソル下の色を取得するやつ"""
+
     bl_idname = "template.capture_color"
     bl_label = translation("my operator")
     bl_description = "operator description"
@@ -49,9 +51,8 @@ class TEMPLATE_OT_CaptureColor(bpy.types.Operator):
     # イベントを受け取りたいときはexecuteの代わりにinvokeが使える
 
     def invoke(self, context, event):
-        color = capture_under_cursor(
-            self.buffer, event.mouse_x, event.mouse_y, "f")
-        context.tool_settings.gpencil_paint.brush.color = (color[:3])
+        color = capture_under_cursor(self.buffer, event.mouse_x, event.mouse_y, "f")
+        context.tool_settings.gpencil_paint.brush.color = color[:3]
         # brushes = [b for b in bpy.data.brushes]
         # for b in brushes:
         #     b.color = (color[:3])
@@ -71,3 +72,21 @@ class TEMPLATE_PT_CursorColor(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         layout.operator(TEMPLATE_OT_CaptureColor.bl_idname)
+
+
+classses = [TEMPLATE_OT_CaptureColor, TEMPLATE_PT_CursorColor]
+tools = []
+
+
+def register():
+    for c in classses:
+        bpy.utils.register_class(c)
+    for t in tools:
+        bpy.utils.register_tool(t)
+
+
+def unregister():
+    for c in classses:
+        bpy.utils.unregister_class(c)
+    for t in tools:
+        bpy.utils.unregister_tool(t)

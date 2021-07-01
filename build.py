@@ -14,10 +14,7 @@ file_list = (
     "lib",
 )
 
-ignores = shutil.ignore_patterns(
-    "__pycache__",
-    "*.pyc"
-)
+ignores = shutil.ignore_patterns("__pycache__", "*.pyc")
 
 # 引数
 args = sys.argv
@@ -28,16 +25,16 @@ def random_name(n: int) -> str:
 
 
 def make_zip(org_name: str, file_list: tuple, suffix: str):
-    zip_name: str = org_name+"_"+suffix
-    zip_dir = "./"+zip_name
+    zip_name: str = org_name + "_" + suffix
+    zip_dir = "./" + zip_name
     zip_path = "./" + zip_name + ".zip"
     print(zip_path)
 
     os.mkdir(zip_name)
     for s in file_list:
-        _path = "./"+s
+        _path = "./" + s
         if os.path.isdir(_path):
-            shutil.copytree(_path, zip_dir+"/"+_path, ignore=ignores)
+            shutil.copytree(_path, zip_dir + "/" + _path, ignore=ignores)
         else:
             shutil.copy(_path, zip_dir)
 

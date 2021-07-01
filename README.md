@@ -22,12 +22,6 @@ cd "addon dev dir"
 pipenv install
 ```
 
-requirements.txt から環境の pip に直接インストールするなら
-
-```
-pip install --user -r requirements.txt
-```
-
 ## build
 
 ```

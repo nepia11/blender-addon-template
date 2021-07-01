@@ -1,7 +1,5 @@
 # .vscode
 .venv
-Pipfile.lock
+# Pipfile.lock
 __pycache__
-icon.png
-blender_gpencil_stroke_normalizer*.zip
 *.log*

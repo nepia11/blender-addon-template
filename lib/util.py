@@ -9,14 +9,13 @@ logger = getLogger(__name__)
 
 
 def random_name(n: int) -> str:
-    """ 引数で指定した桁数のランダムなstrを返す """
+    """引数で指定した桁数のランダムなstrを返す"""
     if n < 0:
         return ValueError
     return "".join(random.choices(string.ascii_letters + string.digits, k=n))
 
 
-def object_duplicate_helper(
-        obj: bpy.types.Object, name: str) -> bpy.types.Object:
+def object_duplicate_helper(obj: bpy.types.Object, name: str) -> bpy.types.Object:
     """
     オブジェクトに任意の名前をつけて複製するヘルパー　複製したオブジェクトを返す
     """
@@ -33,17 +32,13 @@ def object_duplicate_helper(
     return new_obj
 
 
-def calc_vector_length(
-        a: mathutils.Vector, b: mathutils.Vector) -> float:
-    """ 2つのベクトルから長さを求める """
-    vec = b-a
+def calc_vector_length(a: mathutils.Vector, b: mathutils.Vector) -> float:
+    """2つのベクトルから長さを求める"""
+    vec = b - a
     return vec.length
 
 
-def gp_licker(
-        gp_data: bpy.types.GreasePencil,
-        func,
-        state={}):
+def gp_licker(gp_data: bpy.types.GreasePencil, func, state={}):
 
     if type(gp_data) is not bpy.types.GreasePencil:
         logger.debug("not gpencil")
@@ -54,7 +49,4 @@ def gp_licker(
         for fi, frame in enumerate(layer.frames):
             func(state["layers"][li]["frames"][fi], frame, "frame")
             for si, stroke in enumerate(frame.strokes):
-                func(
-                    state["layers"][li]["frames"][fi]["strokes"][si],
-                    stroke,
-                    "stroke")
+                func(state["layers"][li]["frames"][fi]["strokes"][si], stroke, "stroke")
